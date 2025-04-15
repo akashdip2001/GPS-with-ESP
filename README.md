@@ -273,6 +273,14 @@ lib_deps =
   mikalhart/TinyGPSPlus
 ```
 
-![GPS phase II](https://github.com/user-attachments/assets/eb29a75e-d4bc-47b6-9f9e-8523a59890c8)
+![Screenshot (296)](https://github.com/user-attachments/assets/240a6720-a400-4365-b877-02b588c930b0)
 
 https://github.com/user-attachments/assets/dde5140e-a01b-489d-9215-c113c564de4b
+
+### But not give the exect 📍 PIN point
+
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/eb29a75e-d4bc-47b6-9f9e-8523a59890c8" alt="Image 1" width="64%" style="margin-right: 10px;"/>
+  <img src="https://github.com/user-attachments/assets/dcbad3f0-e0c0-4667-bb76-77681fb4946f" alt="Image 2" width="29%" style="margin-right: 10px;"/>
+</p>
