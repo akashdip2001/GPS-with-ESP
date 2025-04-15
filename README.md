@@ -3,7 +3,7 @@
 
 ---
 
-<img src="src/IMG20250415050352.jpg">
+<img src="src/GPS-ESP32.jpg">
 
 ### **Required Components**:
 1. **ESP32 (WROOM-32)** – microcontroller with built-in Wi-Fi
@@ -352,3 +352,9 @@ String htmlPage() {
 - 📡 Send coordinates to Firebase or MQTT (IoT use case)
 - 🛫 Integrate compass & direction arrows
 - 📱 Control via mobile app (Blynk, Flutter, or custom HTML)
+
+![Screenshot (297)](https://github.com/user-attachments/assets/c3a89c1e-44ca-454c-af88-3ac40aa0e3be)
+
+---
+
+# add Google Map 🗺️ with Pin 📌
