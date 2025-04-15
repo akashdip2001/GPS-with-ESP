@@ -16,7 +16,7 @@ HardwareSerial gpsSerial(2);  // Use UART2
 const int RXD2 = 16;
 const int TXD2 = 17;
 
-// ==== HTML Page Template ====
+// ==== HTML Page ====
 String htmlPage() {
   String page = R"rawliteral(
   <!DOCTYPE html>
