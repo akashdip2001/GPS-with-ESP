@@ -3,7 +3,7 @@
 #include <HardwareSerial.h>
 #include <WebServer.h>
 
-// ==== Replace with your WiFi credentials ====
+// ==== Access Point (AP) mode : Replace with your WiFi credentials ====
 const char* ssid = "ESP-32-GPS";
 const char* password = "12345678";
 

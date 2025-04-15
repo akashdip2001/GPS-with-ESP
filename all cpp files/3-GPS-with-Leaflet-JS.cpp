@@ -3,9 +3,15 @@
 #include <HardwareSerial.h>
 #include <WebServer.h>
 
-// ==== Replace with your WiFi credentials ====
+// ==== Replace with your network settings ====
 const char* ssid = "spa";
 const char* password = "12345678";
+
+// ==== Static IP Configuration ====
+IPAddress staticIP(192, 168, 1, 100);  // Set your desired static IP
+IPAddress gateway(192, 168, 1, 1);     // Router's IP
+IPAddress subnet(255, 255, 255, 0);
+IPAddress dns(8, 8, 8, 8);            // Google DNS
 
 // ==== Web server on port 80 ====
 WebServer server(80);
@@ -16,7 +22,7 @@ HardwareSerial gpsSerial(2);  // Use UART2
 const int RXD2 = 16;
 const int TXD2 = 17;
 
-// ==== HTML page with Leaflet.js Map ====
+// ==== HTML Page with Leaflet.js Map ====
 String getHtmlPage(double lat, double lng) {
   String html = R"rawliteral(
     <!DOCTYPE html>
@@ -54,14 +60,11 @@ String getHtmlPage(double lat, double lng) {
 
 // ==== Web Server Route ====
 void handleRoot() {
-  double lat = gps.location.lat();
-  double lng = gps.location.lng();
-
-  if (gps.location.isValid()) {
-    server.send(200, "text/html", getHtmlPage(lat, lng));
-  } else {
-    server.send(200, "text/html", "<h2>Waiting for GPS signal...</h2><meta http-equiv='refresh' content='2'>");
+  if (!gps.location.isValid() || gps.location.age() > 5000) {
+    server.send(200, "text/html", "<h2>GPS signal lost!</h2><meta http-equiv='refresh' content='2'>");
+    return;
   }
+  server.send(200, "text/html", getHtmlPage(gps.location.lat(), gps.location.lng()));
 }
 
 // ==== Setup ====
@@ -72,13 +75,15 @@ void setup() {
   gpsSerial.begin(9600, SERIAL_8N1, RXD2, TXD2);
   Serial.println("GPS Serial Started");
 
-  // WiFi Setup
+  // WiFi Static IP Setup
+  WiFi.config(staticIP, gateway, subnet, dns);
   WiFi.begin(ssid, password);
-  Serial.print("Connecting to WiFi");
+  Serial.print("Connecting to WiFi...");
   while (WiFi.status() != WL_CONNECTED) {
-    delay(500); Serial.print(".");
+    delay(500);
+    Serial.print(".");
   }
-  Serial.println("\nWiFi connected. IP: " + WiFi.localIP().toString());
+  Serial.println("\nWiFi connected. Static IP: " + WiFi.localIP().toString());
 
   // Web Server route
   server.on("/", handleRoot);
