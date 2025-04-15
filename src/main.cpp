@@ -1,88 +1,66 @@
-#include <Arduino.h>
 #include <WiFi.h>
-#include <HardwareSerial.h>
 #include <TinyGPS++.h>
+#include <HardwareSerial.h>
+#include <WebServer.h>
 
-// Set up Wi-Fi credentials
-const char *ssid = "ESP32-GPS-AP"; // Wi-Fi Name (Access Point)
-const char *password = "12345678"; // Wi-Fi Password (min 8 chars)
+// ==== Replace with your WiFi credentials ====
+const char* ssid = "ESP-32-GPS";
+const char* password = "12345678";
 
-// Set up GPS serial communication
-HardwareSerial mySerial(1);  // Using UART1 (RX = GPIO 16, TX = GPIO 17)
-TinyGPSPlus gps;  // GPS object
+// ==== Web server on port 80 ====
+WebServer server(80);
 
-// IP address for AP
-IPAddress local_IP(192, 168, 4, 1);   // Static IP
-IPAddress gateway(192, 168, 4, 1);    // Gateway IP (same as AP)
-IPAddress subnet(255, 255, 255, 0);   // Subnet mask
+// ==== GPS Setup ====
+TinyGPSPlus gps;
+HardwareSerial gpsSerial(2);  // Use UART2
+const int RXD2 = 16;
+const int TXD2 = 17;
 
-// Create web server on port 80
-WiFiServer server(80);
+// HTML Page Template
+String htmlPage() {
+  String page = "<!DOCTYPE html><html><head><meta name='viewport' content='width=device-width, initial-scale=1'>";
+  page += "<style>body{font-family:Arial; text-align:center;}h2{color:#2F4F4F;}</style></head><body>";
+  page += "<h2>ESP32 GPS WebServer</h2>";
+
+  if (gps.location.isValid()) {
+    page += "<p><strong>Latitude:</strong> " + String(gps.location.lat(), 6) + "</p>";
+    page += "<p><strong>Longitude:</strong> " + String(gps.location.lng(), 6) + "</p>";
+    page += "<p><strong>Altitude:</strong> " + String(gps.altitude.meters()) + " meters</p>";
+    page += "<p><strong>Satellites:</strong> " + String(gps.satellites.value()) + "</p>";
+    page += "<p><strong>Speed:</strong> " + String(gps.speed.kmph()) + " km/h</p>";
+  } else {
+    page += "<p><strong>Waiting for valid GPS data...</strong></p>";
+  }
+
+  page += "<br><p>Refresh this page to get updated GPS data.</p>";
+  page += "</body></html>";
+  return page;
+}
+
+void handleRoot() {
+  server.send(200, "text/html", htmlPage());
+}
 
 void setup() {
-  // Start Serial Monitor for debugging
   Serial.begin(115200);
-  
-  // Set up GPS serial port
-  mySerial.begin(9600, SERIAL_8N1, 16, 17);  // Baud rate = 9600
-  
-  // Set up Wi-Fi AP mode
-  WiFi.softAPConfig(local_IP, gateway, subnet);
-  WiFi.softAP(ssid, password);
-  Serial.println("Access Point Started!");
-  Serial.print("Connect to: "); Serial.println(ssid);
-  Serial.print("IP address: "); Serial.println(WiFi.softAPIP());
+  gpsSerial.begin(9600, SERIAL_8N1, RXD2, TXD2);
 
-  // Start web server
+  // Connect to WiFi
+  WiFi.softAP(ssid, password);
+  Serial.println("WiFi started");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.softAPIP());
+
+  // Start Web Server
+  server.on("/", handleRoot);
   server.begin();
+  Serial.println("Web server started");
 }
 
 void loop() {
-  // Wait for a client to connect
-  WiFiClient client = server.available();
-  if (!client) {
-    return;
+  while (gpsSerial.available() > 0) {
+    gps.encode(gpsSerial.read());
   }
 
-  // Wait until the client sends data
-  Serial.println("Client connected!");
-  while (!client.available()) {
-    delay(1);
-  }
-
-  // Read HTTP request
-  String request = client.readStringUntil('\r');
-  Serial.println(request);
-  client.flush();
-
-  // Read GPS data
-  while (mySerial.available() > 0) {
-    gps.encode(mySerial.read());
-  }
-
-  // GPS location logic
-  float latitude = gps.location.lat();
-  float longitude = gps.location.lng();
-
-  // HTML content
-  String html = "<!DOCTYPE html><html>";
-  html += "<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">";
-  html += "<style>body{font-family:sans-serif;text-align:center;}h2{color:green;}</style></head>";
-  html += "<body><h2>GPS Location</h2>";
-  
-  if (gps.location.isUpdated()) {
-    html += "<p>Latitude: " + String(latitude, 6) + "</p>";
-    html += "<p>Longitude: " + String(longitude, 6) + "</p>";
-  } else {
-    html += "<p>Waiting for GPS fix...</p>";
-  }
-
-  html += "</body></html>";
-
-  // Send response
-  client.print("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n");
-  client.print(html);
-
-  delay(1);
-  Serial.println("Client disconnected");
+  server.handleClient();
 }
