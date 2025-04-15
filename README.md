@@ -7,6 +7,9 @@
 
 https://github.com/user-attachments/assets/4714b5dc-0d1e-4cad-b6c4-e74fdfa0ee83
 
+<img src="public/Leaflet JS 01.jpg">
+
+> The upper image from the Leaflet JS part ... `3 PART of the Code Repo`.
 ---
 
 ### **Required Components**:
@@ -412,3 +415,7 @@ https://github.com/user-attachments/assets/e3b67de9-3443-4452-9a67-a0562555eea6
 
 ![Screenshot (303)](https://github.com/user-attachments/assets/a71d912e-99d3-48e8-90de-6d3ae396d318)
 ![Screenshot (306)](https://github.com/user-attachments/assets/fa79e4ec-2ab3-4c7e-a5ff-54b95bb482cb)
+[<img src="public/Leaflet JS 01.jpg">](/public)
+
+https://github.com/user-attachments/assets/c3752f8d-273d-4a7e-a8ce-15fe740a91b3
+
