@@ -261,7 +261,7 @@ void loop() {
 }
 ```
 
-#### Update in**`platformio.ini`**:
+#### Update in **`platformio.ini`**:
 
 ```ini
 [env:esp32dev]
