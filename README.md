@@ -21,6 +21,24 @@
 
 ---
 
+</br>
+</br>
+
+<div style="display: flex; align-items: center; gap: 10px;" align="center">
+  
+## ⭐ [Download](https://github.com/akashdip2001/GPS-with-ESP/blob/main/all%20cpp%20files/1-ESP32-with-GPS-AP.cpp)  as AP : [Download](https://github.com/akashdip2001/GPS-with-ESP/blob/main/all%20cpp%20files/2-ESP32-with-GPS-STA.cpp) as STA ⭐
+</div>
+
+</br>
+</br>
+
+> If ESP32 is working in Access Point (AP) mode, your phone loses internet when connected to its network, meaning Google-Map 0R CDNs won't load.
+> But if we switch to Station Mode (STA), where ESP32 connects to your home Wi-Fi (or Mobile HotsPort), both ESP32 and your phone are on the same local network, and you can:
+- Use internet on your phone at Same Time.
+- Access Leaflet CDN and map (if any)
+
+---
+
 ### **Code Explanation**:
 
 1. The ESP32 will function as an **Access Point**.
@@ -372,3 +390,14 @@ String htmlPage() {
 
 # add Google Map 🗺️ with Pin 📌 using **Leaflet.js**
 > ✅ Leaflet.js is a free, lightweight, and powerful alternative to Google Maps — and combining it with my ESP32 GPS for real-time movement tracking on a custom map is next-level awesome 🚀 Let's make ot.
+
+</br>
+</br>
+
+<div style="display: flex; align-items: center; gap: 10px;" align="center">
+  
+## ⭐ Download [file](https://github.com/akashdip2001/GPS-with-ESP/blob/main/all%20cpp%20files/3-GPS-with-Leaflet-JS.cpp) ⭐
+</div>
+
+</br>
+</br>
