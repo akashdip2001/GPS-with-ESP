@@ -1,4 +1,4 @@
-﻿# GPS-with-ESP
+﻿# GPS-with-ESP 🗺️📌
 > ESP32 (with GY-GPS6MU2) works as an **Access Point** and shows the GPS coordinates on a web page when the user connects to it.
 
 ---
@@ -284,3 +284,71 @@ https://github.com/user-attachments/assets/dde5140e-a01b-489d-9215-c113c564de4b
   <img src="https://github.com/user-attachments/assets/eb29a75e-d4bc-47b6-9f9e-8523a59890c8" alt="Image 1" width="64%" style="margin-right: 10px;"/>
   <img src="https://github.com/user-attachments/assets/dcbad3f0-e0c0-4667-bb76-77681fb4946f" alt="Image 2" width="29%" style="margin-right: 10px;"/>
 </p>
+
+---
+
+## Update with Google-Map link 🗺️📌
+
+---
+
+## ✅ **Phase II Features**
+
+### 1. ✅ **Real-Time GPS Auto-Refresh**
+- Add **JavaScript auto-refresh** every few seconds to update GPS data automatically without reloading the entire page.
+
+### 2. ✅ **Open in Google Maps Link**
+- Display a **clickable Google Maps link** that opens directly with the live coordinates.
+
+---
+
+## 🚀 Updated Code Snippet (Just Replace Your `htmlPage()` Function)
+
+```cpp
+String htmlPage() {
+  String page = "<!DOCTYPE html><html><head><meta name='viewport' content='width=device-width, initial-scale=1'>";
+  page += "<meta http-equiv='refresh' content='5'>"; // Auto-refresh every 5 seconds
+  page += "<style>body{font-family:Arial; text-align:center;}h2{color:#2F4F4F;}</style></head><body>";
+  page += "<h2>ESP32 GPS WebServer</h2>";
+
+  if (gps.location.isValid()) {
+    double lat = gps.location.lat();
+    double lng = gps.location.lng();
+
+    page += "<p><strong>Latitude:</strong> " + String(lat, 6) + "</p>";
+    page += "<p><strong>Longitude:</strong> " + String(lng, 6) + "</p>";
+    page += "<p><strong>Altitude:</strong> " + String(gps.altitude.meters()) + " meters</p>";
+    page += "<p><strong>Satellites:</strong> " + String(gps.satellites.value()) + "</p>";
+    page += "<p><strong>Speed:</strong> " + String(gps.speed.kmph()) + " km/h</p>";
+
+    // Google Maps Link
+    page += "<p><a href='https://www.google.com/maps?q=" + String(lat, 6) + "," + String(lng, 6) + "' target='_blank'>";
+    page += "click to -> Open in Google-Maps</a></p>";
+  } else {
+    page += "<p><strong>Waiting for valid GPS data...</strong></p>";
+  }
+
+  page += "<br><p>Auto-refresh every 5 seconds to get real-time GPS data.</p>";
+  page += "</body></html>";
+  return page;
+}
+```
+
+---
+
+### 🧠 Explanation:
+
+| Feature | Code Used | Description |
+|--------|------------|-------------|
+| **Auto Refresh** | `<meta http-equiv='refresh' content='5'>` | Updates page every 5 seconds. |
+| **Map Link** | `https://www.google.com/maps?q=lat,lng` | Opens coordinates in Google Maps with a tap. |
+| **Responsive** | Styled with inline CSS | Mobile-friendly view. |
+
+---
+
+### 🧪 Next Phase Ideas
+
+- 🔴 Live Marker on Embedded Google Maps (with API)
+- 💾 Store GPS History in SD card or SPIFFS
+- 📡 Send coordinates to Firebase or MQTT (IoT use case)
+- 🛫 Integrate compass & direction arrows
+- 📱 Control via mobile app (Blynk, Flutter, or custom HTML)
