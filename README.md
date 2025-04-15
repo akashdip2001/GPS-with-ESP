@@ -9,7 +9,7 @@ https://github.com/user-attachments/assets/4714b5dc-0d1e-4cad-b6c4-e74fdfa0ee83
 
 <img src="public/Leaflet JS 01.jpg">
 
-> The upper image from the Leaflet JS part ... `3 PART of the Code Repo`.
+> The upper image from the Leaflet JS part ... `3 PART of the Code Repo`. Jump to [this part](#leafletJs-part)
 ---
 
 ### **Required Components**:
@@ -395,7 +395,7 @@ String htmlPage() {
 
 ---
 
-# add Google Map 🗺️ with Pin 📌 using **Leaflet.js**
+# add Google Map 🗺️ with Pin 📌 using **Leaflet.js** <a name="leafletJs-part"></a>
 > ✅ Leaflet.js is a free, lightweight, and powerful alternative to Google Maps — and combining it with my ESP32 GPS for real-time movement tracking on a custom map is next-level awesome 🚀 Let's make ot.
 
 </br>
