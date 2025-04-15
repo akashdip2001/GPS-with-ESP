@@ -1,4 +1,4 @@
-<img src="public/GPS-ESP32.jpg">
+<img src="../public/GPS-ESP32.jpg">
 
 https://github.com/user-attachments/assets/4714b5dc-0d1e-4cad-b6c4-e74fdfa0ee83
 
