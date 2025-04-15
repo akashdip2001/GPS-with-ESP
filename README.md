@@ -5,6 +5,10 @@
 
 <img src="public/GPS-ESP32.jpg">
 
+https://github.com/user-attachments/assets/4714b5dc-0d1e-4cad-b6c4-e74fdfa0ee83
+
+---
+
 ### **Required Components**:
 1. **ESP32 (WROOM-32)** – microcontroller with built-in Wi-Fi
 2. **GY-GPS6MU2** – GPS module (uses NEO-6M GPS chipset)
