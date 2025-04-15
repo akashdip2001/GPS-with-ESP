@@ -35,7 +35,7 @@ String htmlPage() {
 
     // Google Maps Link
     page += "<p><a href='https://www.google.com/maps?q=" + String(lat, 6) + "," + String(lng, 6) + "' target='_blank'>";
-    page += "click to --> Open in Google-Maps</a></p>";
+    page += "click to -> Open in Google-Maps</a></p>";
   } else {
     page += "<p><strong>Waiting for valid GPS data...</strong></p>";
   }
