@@ -355,6 +355,11 @@ String htmlPage() {
 
 ![Screenshot (297)](https://github.com/user-attachments/assets/c3a89c1e-44ca-454c-af88-3ac40aa0e3be)
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/9a483288-7830-417f-84e4-618cef5cb684" alt="Image 1" width="46%" style="margin-right: 10px;"/>
+  <img src="https://github.com/user-attachments/assets/7ef61df3-fbb1-46ff-a8a1-fe855477ecc1" alt="Image 2" width="46%" style="margin-right: 10px;"/>
+</p>
+
 ---
 
 # add Google Map 🗺️ with Pin 📌
