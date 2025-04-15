@@ -3,6 +3,8 @@
 
 ---
 
+<img src="src/IMG20250415050352.jpg">
+
 ### **Required Components**:
 1. **ESP32 (WROOM-32)** – microcontroller with built-in Wi-Fi
 2. **GY-GPS6MU2** – GPS module (uses NEO-6M GPS chipset)
