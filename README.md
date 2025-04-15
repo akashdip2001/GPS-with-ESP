@@ -190,6 +190,7 @@ lib_deps =
 
 # Update the Code : for Coordinate
 > Using `platformio`
+> if the link not work properly, copy the Cordinate from `web-site` and pest in to `Google-Map`.
 
 ```cpp
 #include <WiFi.h>
@@ -353,7 +354,14 @@ String htmlPage() {
 - 🛫 Integrate compass & direction arrows
 - 📱 Control via mobile app (Blynk, Flutter, or custom HTML)
 
+</br>
+</br>
+
 ![Screenshot (297)](https://github.com/user-attachments/assets/c3a89c1e-44ca-454c-af88-3ac40aa0e3be)
+
+</br>
+
+> if the link not work properly, copy the Cordinate from `web-site` and pest in to `Google-Map`.
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/9a483288-7830-417f-84e4-618cef5cb684" alt="Image 1" width="46%" style="margin-right: 10px;"/>
@@ -362,4 +370,5 @@ String htmlPage() {
 
 ---
 
-# add Google Map 🗺️ with Pin 📌
+# add Google Map 🗺️ with Pin 📌 using **Leaflet.js**
+> ✅ Leaflet.js is a free, lightweight, and powerful alternative to Google Maps — and combining it with my ESP32 GPS for real-time movement tracking on a custom map is next-level awesome 🚀 Let's make ot.
