@@ -18,30 +18,68 @@ const int TXD2 = 17;
 
 // ==== HTML Page Template ====
 String htmlPage() {
-  String page = "<!DOCTYPE html><html><head><meta name='viewport' content='width=device-width, initial-scale=1'>";
-  page += "<meta http-equiv='refresh' content='5'>";
-  page += "<style>body{font-family:Arial; text-align:center;}h2{color:#2F4F4F;}</style></head><body>";
-  page += "<h2>ESP32 GPS WebServer</h2>";
+  String page = R"rawliteral(
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <title>ESP32 GPS Tracker</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta http-equiv='refresh' content='5'>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+      body { margin:0; font-family: Arial, sans-serif; text-align: center; background: #f4f4f4; }
+      h2 { color: #2c3e50; margin: 10px 0; }
+      #map { height: 80vh; width: 100%; margin: 10px 0; border: 2px solid #2c3e50; border-radius: 10px; }
+      .info { font-size: 18px; padding: 10px; }
+      .custom-pin {
+        background-color: red;
+        border-radius: 50%;
+        width: 14px;
+        height: 14px;
+        display: block;
+        border: 2px solid white;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>ESP32 GPS Tracker</h2>
+    <div id="map"></div>
+    <div class="info">
+      Latitude: %LAT%<br>
+      Longitude: %LNG%<br>
+      Satellites: %SAT%<br>
+      Speed: %SPD% km/h
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+      var map = L.map('map').setView([%LAT%, %LNG%], 16);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
+
+      var icon = L.divIcon({ className: 'custom-pin' });
+      var marker = L.marker([%LAT%, %LNG%], { icon: icon }).addTo(map);
+    </script>
+  </body>
+  </html>
+  )rawliteral";
 
   if (gps.location.isValid()) {
-    double lat = gps.location.lat();
-    double lng = gps.location.lng();
-
-    page += "<p><strong>Latitude:</strong> " + String(lat, 6) + "</p>";
-    page += "<p><strong>Longitude:</strong> " + String(lng, 6) + "</p>";
-    page += "<p><strong>Altitude:</strong> " + String(gps.altitude.meters()) + " meters</p>";
-    page += "<p><strong>Satellites:</strong> " + String(gps.satellites.value()) + "</p>";
-    page += "<p><strong>Speed:</strong> " + String(gps.speed.kmph()) + " km/h</p>";
-    page += "<p><a href='https://www.google.com/maps?q=" + String(lat, 6) + "," + String(lng, 6) + "' target='_blank'>";
-    page += "click to -> Open in Google-Maps</a></p>";
+    page.replace("%LAT%", String(gps.location.lat(), 6));
+    page.replace("%LNG%", String(gps.location.lng(), 6));
+    page.replace("%SAT%", String(gps.satellites.value()));
+    page.replace("%SPD%", String(gps.speed.kmph()));
   } else {
-    page += "<p><strong>Waiting for valid GPS data...</strong></p>";
+    page.replace("%LAT%", "0");
+    page.replace("%LNG%", "0");
+    page.replace("%SAT%", "0");
+    page.replace("%SPD%", "0");
   }
 
-  page += "<br><p>Auto-refresh every 5 seconds to get real-time GPS data.</p>";
-  page += "</body></html>";
   return page;
 }
+
 
 void handleRoot() {
   server.send(200, "text/html", htmlPage());
