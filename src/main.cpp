@@ -18,13 +18,12 @@ const int TXD2 = 17;
 
 // ==== HTML Page Template ====
 String htmlPage() {
-  String page = R"rawliteral(
+  return R"rawliteral(
   <!DOCTYPE html>
   <html>
   <head>
     <title>ESP32 GPS Tracker</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <meta http-equiv='refresh' content='5'>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
       body { margin:0; font-family: Arial, sans-serif; text-align: center; background: #f4f4f4; }
@@ -44,40 +43,49 @@ String htmlPage() {
   <body>
     <h2>ESP32 GPS Tracker</h2>
     <div id="map"></div>
-    <div class="info">
-      Latitude: %LAT%<br>
-      Longitude: %LNG%<br>
-      Satellites: %SAT%<br>
-      Speed: %SPD% km/h
+    <div class="info" id="info">
+      Loading GPS data...
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-      var map = L.map('map').setView([%LAT%, %LNG%], 16);
+      let map = L.map('map').setView([0, 0], 2);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
       }).addTo(map);
 
-      var icon = L.divIcon({ className: 'custom-pin' });
-      var marker = L.marker([%LAT%, %LNG%], { icon: icon }).addTo(map);
+      const icon = L.divIcon({ className: 'custom-pin' });
+      const marker = L.marker([0, 0], { icon: icon }).addTo(map);
+
+      async function updateLocation() {
+        try {
+          const res = await fetch('/gps');
+          const data = await res.json();
+
+          const lat = data.lat;
+          const lng = data.lng;
+
+          marker.setLatLng([lat, lng]);
+
+          document.getElementById('info').innerHTML = `
+            Latitude: ${lat}<br>
+            Longitude: ${lng}<br>
+            Satellites: ${data.sat}<br>
+            Speed: ${data.spd} km/h
+          `;
+        } catch (err) {
+          console.error("Failed to update location", err);
+        }
+      }
+
+      // First load
+      updateLocation();
+      // Repeat every 5 seconds
+      setInterval(updateLocation, 5000);
     </script>
   </body>
   </html>
   )rawliteral";
-
-  if (gps.location.isValid()) {
-    page.replace("%LAT%", String(gps.location.lat(), 6));
-    page.replace("%LNG%", String(gps.location.lng(), 6));
-    page.replace("%SAT%", String(gps.satellites.value()));
-    page.replace("%SPD%", String(gps.speed.kmph()));
-  } else {
-    page.replace("%LAT%", "0");
-    page.replace("%LNG%", "0");
-    page.replace("%SAT%", "0");
-    page.replace("%SPD%", "0");
-  }
-
-  return page;
 }
 
 
@@ -105,6 +113,22 @@ void setup() {
   server.on("/", handleRoot);
   server.begin();
   Serial.println("Web server started");
+
+  // ==== a New Endpoint for GPS Data ====
+  server.on("/gps", []() {
+  String json = "{";
+  if (gps.location.isValid()) {
+    json += "\"lat\":" + String(gps.location.lat(), 6) + ",";
+    json += "\"lng\":" + String(gps.location.lng(), 6) + ",";
+    json += "\"sat\":" + String(gps.satellites.value()) + ",";
+    json += "\"spd\":" + String(gps.speed.kmph());
+  } else {
+    json += "\"lat\":0,\"lng\":0,\"sat\":0,\"spd\":0";
+  }
+  json += "}";
+  server.send(200, "application/json", json);
+});
+
 }
 
 void loop() {
