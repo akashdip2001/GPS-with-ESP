@@ -3,7 +3,7 @@
 
 ---
 
-<img src="src/GPS-ESP32.jpg">
+<img src="public/GPS-ESP32.jpg">
 
 ### **Required Components**:
 1. **ESP32 (WROOM-32)** – microcontroller with built-in Wi-Fi
