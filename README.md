@@ -446,8 +446,22 @@ https://github.com/user-attachments/assets/c3752f8d-273d-4a7e-a8ce-15fe740a91b3
 </p>
 
 <p align="center">
-  <img src="all cpp files/4-GPS & Users location/Screenshot (311).png" width="40%" style="margin-right: 10px;"/>
-  <img src="all cpp files/4-GPS & Users location/Location permission error 01.jpg" width="20%" style="margin-right: 10px;"/>
-  <img src="all cpp files/4-GPS & Users location/Location permission error 02.jpg" width="20%" style="margin-right: 10px;"/>
+  <img src="all cpp files/4-GPS & Users location/Screenshot (311).png" width="60%" style="margin-right: 10px;"/>
+  <img src="all cpp files/4-GPS & Users location/Location permission error 01.jpg" width="16%" style="margin-right: 10px;"/>
+  <img src="all cpp files/4-GPS & Users location/Location permission error 02.jpg" width="16%" style="margin-right: 10px;"/>
 </p>
 
+### Disclaimer
+
+https://github.com/user-attachments/assets/d2fbb0f3-4d45-4285-b1ea-0003230730b3
+
+</br>
+</br>
+
+<div style="display: flex; align-items: center; gap: 10px;" align="center">
+  
+## ⭐ The End (16/04/2025) ⭐
+</div>
+
+</br>
+</br>
