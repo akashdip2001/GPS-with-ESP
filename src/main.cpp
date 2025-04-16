@@ -47,85 +47,88 @@ const char htmlPage[] PROGMEM = R"rawliteral(
   
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    let userName = prompt("Please enter your name:") || "Anonymous";
-    const clientId = "client_" + Math.random().toString(36).substr(2, 9);
-    let map = L.map('map').setView([0, 0], 2);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
-    
-    let markers = {};
-    let hasZoomed = false;
+  // Prompt for user name
+  let userName = prompt("Please enter your name:") || "Anonymous";
 
-    const ws = new WebSocket('ws://' + window.location.hostname + '/ws');
+  // Generate a random client ID string
+  const clientId = "client_" + Math.random().toString(36).substr(2, 9);
 
-    ws.onopen = function() {
-      document.getElementById('info').innerHTML = 'Connected to server.';
-      sendClientLocation({coords: {latitude: 0, longitude: 0}});
-      if (navigator.geolocation) {
-        navigator.geolocation.watchPosition(sendClientLocation, function(error) {
-          console.error("Geolocation error:", error);
-        }, { enableHighAccuracy: true, maximumAge: 3000, timeout: 5000 });
-      } else {
-        console.error("Geolocation not supported by this browser.");
-      }
-    };
+  // Initialize the map centered at [0,0]
+  let map = L.map('map').setView([0, 0], 2);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
 
-    ws.onmessage = function(event) {
-      let data = JSON.parse(event.data);
-      let id = data.id;
-      let lat = data.lat;
-      let lng = data.lng;
-      let type = data.type;
+  // Marker store
+  let markers = {};
 
-      let iconClass = 'client-pin';
-      if (type === "module") iconClass = 'custom-pin';
-      if (type === "client" && id === clientId) iconClass = 'self-pin';
+  // WebSocket connection
+  const ws = new WebSocket('ws://' + window.location.hostname + '/ws');
 
-      if (type === "module" || type === "client") {
-        if (markers[id]) {
-          markers[id].setLatLng([lat, lng]);
-        } else {
-          let customIcon = L.divIcon({ className: iconClass });
-          markers[id] = L.marker([lat, lng], { icon: customIcon }).addTo(map);
-          let label = (id === clientId) ? "You (" + userName + ")" : data.name || (type === "module" ? "GPS Module" : "Client");
-          markers[id].bindPopup(label);
-        }
+  ws.onopen = function () {
+    document.getElementById('info').innerHTML = 'Connected to server.';
+    console.log("WebSocket connected. Trying to access geolocation...");
 
-        // Update popup if name changed
-        if (data.name && markers[id].getPopup()) {
-          markers[id].getPopup().setContent((id === clientId) ? "You (" + data.name + ")" : data.name);
-        }
-
-        // Zoom to self only once
-        if (id === clientId && !hasZoomed && lat !== 0 && lng !== 0) {
-          hasZoomed = true;
-          map.setView([lat, lng], 15, { animate: true });
-          markers[id].openPopup();
-        }
-      } else if (type === "remove") {
-        if (markers[id]) {
-          map.removeLayer(markers[id]);
-          delete markers[id];
-        }
-      }
-    };
-
-    ws.onclose = function() {
-      document.getElementById('info').innerHTML = 'Disconnected from server.';
-    };
-
-    function sendClientLocation(position) {
-      let message = {
-        type: "client",
-        id: clientId,
-        name: userName,
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
-      ws.send(JSON.stringify(message));
+    // Start watching location if allowed
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(sendClientLocation, function (error) {
+        console.error("Geolocation error:", error);
+        alert("Location access failed: " + error.message);
+      }, {
+        enableHighAccuracy: true,
+        maximumAge: 3000,
+        timeout: 5000
+      });
+    } else {
+      console.error("Geolocation not supported by this browser.");
+      alert("Geolocation not supported by this browser.");
     }
-  </script>
+  };
+
+  ws.onmessage = function (event) {
+    let data = JSON.parse(event.data);
+    let id = data.id;
+    let lat = data.lat;
+    let lng = data.lng;
+    let type = data.type;
+    let name = data.name || (type === "module" ? "GPS Module" : "Client");
+
+    let iconClass = (type === "module") ? 'custom-pin' : 'client-pin';
+
+    if (markers[id]) {
+      markers[id].setLatLng([lat, lng]);
+    } else {
+      let customIcon = L.divIcon({ className: iconClass });
+      markers[id] = L.marker([lat, lng], { icon: customIcon }).addTo(map).bindPopup(name).openPopup();
+
+      // Zoom to first-time user location (self only)
+      if (id === clientId) {
+        map.setView([lat, lng], 16, { animate: true, duration: 2 });
+      }
+    }
+
+    // Update name in popup
+    if (markers[id].getPopup()) {
+      markers[id].getPopup().setContent(name);
+    }
+  };
+
+  ws.onclose = function () {
+    document.getElementById('info').innerHTML = 'Disconnected from server.';
+  };
+
+  function sendClientLocation(position) {
+    let message = {
+      type: "client",
+      id: clientId,
+      name: userName,
+      lat: position.coords.latitude,
+      lng: position.coords.longitude
+    };
+    ws.send(JSON.stringify(message));
+    console.log("Location sent:", message);
+  }
+</script>
 </body>
 </html>
 )rawliteral";
