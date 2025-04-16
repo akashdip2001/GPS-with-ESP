@@ -34,3 +34,22 @@ https://github.com/user-attachments/assets/1eae3d1c-eb46-4f1e-98bc-167ca8ecfab7
 https://github.com/user-attachments/assets/c3752f8d-273d-4a7e-a8ce-15fe740a91b3
 
 ---
+
+# GPS 🗺️📌 + User location 🙍‍♂️👤📌
+
+## ⚠️ only show the `GPS module` !!! Wher's the users ?? : Browser Location Permition
+
+<p align="center">
+  <img src="4-GPS & Users location/Screenshot (313).png" alt="Image 1" width="46%" style="margin-right: 10px;"/>
+  <img src="4-GPS & Users location/Screenshot (312).png" alt="Image 2" width="46%" style="margin-right: 10px;"/>
+</p>
+
+<p align="center">
+  <img src="4-GPS & Users location/Screenshot (311).png" width="60%" style="margin-right: 10px;"/>
+  <img src="4-GPS & Users location/Location permission error 01.jpg" width="16%" style="margin-right: 10px;"/>
+  <img src="4-GPS & Users location/Location permission error 02.jpg" width="16%" style="margin-right: 10px;"/>
+</p>
+
+### Disclaimer
+
+https://github.com/user-attachments/assets/d2fbb0f3-4d45-4285-b1ea-0003230730b3
