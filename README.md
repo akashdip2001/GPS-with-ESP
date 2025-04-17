@@ -465,3 +465,16 @@ https://github.com/user-attachments/assets/d2fbb0f3-4d45-4285-b1ea-0003230730b3
 
 </br>
 </br>
+
+![Screenshot (320)](https://github.com/user-attachments/assets/757365b6-2bac-4ec3-a485-d6f1e0c6dfbc)
+
+</br>
+</br>
+
+<div style="display: flex; align-items: center; gap: 10px;" align="center">
+  
+### ⭐ Disconnected from server : Have a Good Day ;) ⭐
+</div>
+
+</br>
+</br>
